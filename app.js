@@ -5,6 +5,7 @@ const category = 'nature';
 let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
+  
 let loadImages = function(currentPage){
     var midPaginationBtn;
         
@@ -40,34 +41,43 @@ let loadImages = function(currentPage){
                 </p>`
                 imagesContainer.appendChild(imageDiv)
             }
+     })
+};
 
-      //Populate the Pagination Section
-      let loadPaginationBtns = function(midPaginationBtn){
-          let paginationButtonsList = document.createElement("ul");
-          paginationButtonsList.classList.add("theButtonsList"); 
-          paginationButtonsList.innerHTML = 
+  
+//Populate the Pagination Section
+let loadPaginationBtns = function(midPaginationBtn){
 
-          `<li class="button" onclick="loadImages(${currentPage-1})"><a>«</a></li>
-          <li class="button" onclick="loadImages(1)"><a>1</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
-          <li id="currentPage" class="button" onclick="loadImages(${midPaginationBtn})">${midPaginationBtn}</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
-          <li class="button" onclick="loadImages(${lastPage})">${lastPage}</li>
-          <li class="button" onclick="loadImages(${currentPage+1})">»</a></li>`
+   let paginationButtonsList = document.createElement("ul");
+   paginationButtonsList.classList.add("theButtonsList"); 
+   paginationButtonsList.innerHTML = 
 
-          paginationContainer.appendChild(paginationButtonsList);      
-      }
+      `<li class="button" onclick="refreshDOM(${currentPage-1})"><a>«</a></li>
+      <li class="button" onclick="refreshDOM(1)"><a>1</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
+      <li id="currentPage" class="button" onclick="refreshDOM(${midPaginationBtn})">${midPaginationBtn}</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
+      <li class="button" onclick="refreshDOM(${lastPage})">${lastPage}</li>
+      <li class="button" onclick="refreshDOM(${currentPage+1})">»</a></li>`
 
-      if (currentPage < 4){
-          loadPaginationBtns(4);
-      } else if (currentPage>(lastPage-3)){
-          loadPaginationBtns(lastPage-3);
-      } else {
-          loadPaginationBtns(currentPage);
-      } 
-  });
+      paginationContainer.appendChild(paginationButtonsList);      
 }
 
-loadImages(currentPage);
+let refreshDOM = function(pageToLoad){
+    loadImages(pageToLoad);
+    loadPaginationBtns(pageToLoad);
+}
+
+ 
+refreshDOM(currentPage);
+
+
+if (currentPage < 4){
+   loadPaginationBtns(4);
+} else if (currentPage>(lastPage-3)){
+   loadPaginationBtns(lastPage-3);
+} else {
+   loadPaginationBtns(currentPage);
+}
