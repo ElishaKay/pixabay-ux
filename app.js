@@ -1,5 +1,5 @@
 let lastPage;
-let currentPage = 1;
+let currentPage;
 const image_type = 'photo';
 const category = 'nature';
 let imagesContainer = document.querySelector('#imagesContainer');
@@ -26,6 +26,13 @@ let loadImages = function(currentPage){
         function( data ) {
             let total = data.totalHits;
             lastPage = Math.ceil(data.totalHits/9);
+            if (currentPage < 4){
+               loadPaginationBtns(4);
+            } else if (currentPage>(lastPage-3)){
+               loadPaginationBtns(lastPage-3);
+            } else {
+               loadPaginationBtns(currentPage);
+            }
             console.log(data);
 
             //Populate the Images Container
@@ -47,6 +54,7 @@ let loadImages = function(currentPage){
   
 //Populate the Pagination Section
 let loadPaginationBtns = function(midPaginationBtn){
+    console.log('this is the lastPage var in loadPagination function:', lastPage);
 
    let paginationButtonsList = document.createElement("ul");
    paginationButtonsList.classList.add("theButtonsList"); 
@@ -67,17 +75,9 @@ let loadPaginationBtns = function(midPaginationBtn){
 
 let refreshDOM = function(pageToLoad){
     loadImages(pageToLoad);
-    loadPaginationBtns(pageToLoad);
 }
 
  
-refreshDOM(currentPage);
+refreshDOM(1);
 
 
-if (currentPage < 4){
-   loadPaginationBtns(4);
-} else if (currentPage>(lastPage-3)){
-   loadPaginationBtns(lastPage-3);
-} else {
-   loadPaginationBtns(currentPage);
-}
