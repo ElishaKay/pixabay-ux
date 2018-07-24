@@ -3,7 +3,7 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">'
+    <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset="UTF-8" />
   <title>Pixabay API</title>
 </head>
@@ -29,13 +29,9 @@
     let paginationContainer = document.querySelector('#paginationContainer');
 
     let loadImages = function(pageNumber){
-        let midPaginationBtn;
+        var midPaginationBtn;
         currentPage = pageNumber;
-        if(currentPage < 4){
-           midPaginationBtn = 4;
-        } else {
-          midPaginationBtn = currentPage; 
-        } 
+        
         imagesContainer.innerHTML = '';
         paginationContainer.innerHTML = '';
         
@@ -49,7 +45,7 @@
             }, 
             function( data ) {
                 let total = data.totalHits;
-                let lastPage = Math.floor(data.totalHits/9);
+                let lastPage = Math.ceil(data.totalHits/9);
                 console.log('lastPage: ',lastPage);
                 console.log(data);
 
@@ -58,30 +54,46 @@
                 for (i = 0; i < images.length; i++) { 
                     let imageDiv = document.createElement("div");
                     imageDiv.classList.add("imageBox");
-                    imageDiv.innerHTML = `<img class='imgPreview' src='${images[i].largeImageURL}'>
-                                        <img class='avatar' src='${images[i].userImageURL}'>
-                                        <p class='username'>
-                                            <a target="_blank" href='https://pixabay.com/users/${images[i].user}'+'-'+${images[i].user_id}>${images[i].user}</a>
+                    imageDiv.innerHTML = 
+                    `<img class='imgPreview' src='${images[i].largeImageURL}'>
+                    <img class='avatar' src='${images[i].userImageURL}'>
+                    <p class='username'>
+                    <a target="_blank" href='https://pixabay.com/users/${images[i].user}'+'-'+${images[i].user_id}>${images[i].user}</a>
                                         </p>`
                     imagesContainer.appendChild(imageDiv)
                 }
 
-                //Populate the Pagination Section
-                let paginationButtonsList = document.createElement("ul");
-                paginationButtonsList.classList.add("theButtonsList"); 
-                paginationButtonsList.innerHTML = 
+      //Populate the Pagination Section
+      function loadPaginationBtns (midPaginationBtn){
+          let paginationButtonsList = document.createElement("ul");
+          paginationButtonsList.classList.add("theButtonsList"); 
+          paginationButtonsList.innerHTML = 
 
-      `<li class="button"><a>«</a></li>
-      <li class="button"><a>1</a></li>
-      <li class="button" onclick="loadImages(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
-      <li class="button" onclick="loadImages(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
-      <li id="currentPage" class="button" onclick="loadImages(${midPaginationBtn})">${midPaginationBtn}</a></li>
-      <li class="button" onclick="loadImages(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
-      <li class="button" onclick="loadImages(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
-      <li class="button" onclick="loadImages(${lastPage})">${lastPage}</li>
-      <li class="button">»</a></li>`
+          `<li class="button" onclick="loadImages(${currentPage-1})"><a>«</a></li>
+          <li class="button" onclick="loadImages(1)"><a>1</a></li>
+          <li class="button" onclick="loadImages(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
+          <li class="button" onclick="loadImages(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
+          <li id="currentPage" class="button" onclick="loadImages(${midPaginationBtn})">${midPaginationBtn}</a></li>
+          <li class="button" onclick="loadImages(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
+          <li class="button" onclick="loadImages(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
+          <li class="button" onclick="loadImages(${lastPage})">${lastPage}</li>
+          <li class="button" onclick="loadImages(${currentPage+1})">»</a></li>`
 
-      paginationContainer.appendChild(paginationButtonsList);
+          paginationContainer.appendChild(paginationButtonsList);      
+      }
+
+      if (1 > pageNumber > lastPage){
+          console.log('desired pageNumber out of range');
+          return;
+      }
+      if (currentPage < 4){
+          loadPaginationBtns(4);
+      } else if (pageNumber>(lastPage-2)){
+          loadPaginationBtns(lastPage-3);
+      } else {
+          loadPaginationBtns(currentPage);
+      } 
+      
       });
     }
 
