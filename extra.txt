@@ -1,0 +1,31 @@
+  <!-- Our buttons go here -->
+  <center>
+  <div id="paginationContainer">
+        <!-- Our pagination buttons go here -->
+    </div>
+  </center>
+
+</body>
+
+<script>
+    const image_type = 'photo';
+    const category = 'nature';
+    let imagesContainer = document.querySelector('#imagesContainer');
+    let paginationContainer = document.querySelector('#paginationContainer');
+
+
+
+
+
+
+     let paginationDiv = document.createElement("div");
+                <ul class="theButtonsList">
+                <li class="button"><a>«</a></li>
+                <li class="button"><a>1</a></li>
+                <li class="button"><a href="page2">2</a></li>
+                <li class="button"><a href="page2">3</a></li>
+                <li class="button"><a href="page2">4</a></li>
+                <li class="button"><a href="page2">5</a></li>
+                <li class="button"><a href="page2">6</a></li>
+                <li class="button"><a href="page2">»</a></li>
+                </ul>

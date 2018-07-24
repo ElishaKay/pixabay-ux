@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">'
+  <meta charset="UTF-8" />
+  <title>Pixabay API</title>
+</head>
+<body>
+  <div id="imagesContainer">
+    <!-- Our images go here -->
+  </div>
+
+  <!-- Our buttons go here -->
+  <center>
+      <div id="paginationContainer">
+  <!-- Our pagination buttons go here -->
+      </div>
+  </center>
+      
+</body>
+      
+<script>
+    let currentPage = 1;
+    const image_type = 'photo';
+    const category = 'nature';
+    let imagesContainer = document.querySelector('#imagesContainer');
+    let paginationContainer = document.querySelector('#paginationContainer');
+
+    let loadImages = function(pageNumber){
+        let midPaginationBtn;
+        currentPage = pageNumber;
+        if(currentPage < 4){
+           midPaginationBtn = 4;
+        } else {
+          midPaginationBtn = currentPage; 
+        } 
+        imagesContainer.innerHTML = '';
+        paginationContainer.innerHTML = '';
+        
+
+        $.get("https://pixabay.com/api", 
+            {key: '9463119-69ef5d64c755fd0eb340937ae',
+            image_type: image_type,
+            category: category,
+            page: pageNumber,
+            per_page: 9
+            }, 
+            function( data ) {
+                let total = data.totalHits;
+                let lastPage = Math.floor(data.totalHits/9);
+                console.log('lastPage: ',lastPage);
+                console.log(data);
+
+                //Populate the Images Container
+                let images = data.hits;
+                for (i = 0; i < images.length; i++) { 
+                    let imageDiv = document.createElement("div");
+                    imageDiv.classList.add("imageBox");
+                    imageDiv.innerHTML = `<img class='imgPreview' src='${images[i].largeImageURL}'>
+                                        <img class='avatar' src='${images[i].userImageURL}'>
+                                        <p class='username'>
+                                            <a target="_blank" href='https://pixabay.com/users/${images[i].user}'+'-'+${images[i].user_id}>${images[i].user}</a>
+                                        </p>`
+                    imagesContainer.appendChild(imageDiv)
+                }
+
+                //Populate the Pagination Section
+                let paginationButtonsList = document.createElement("ul");
+                paginationButtonsList.classList.add("theButtonsList"); 
+                paginationButtonsList.innerHTML = 
+
+      `<li class="button"><a>«</a></li>
+      <li class="button"><a>1</a></li>
+      <li class="button" onclick="loadImages(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
+      <li class="button" onclick="loadImages(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
+      <li id="currentPage" class="button" onclick="loadImages(${midPaginationBtn})">${midPaginationBtn}</a></li>
+      <li class="button" onclick="loadImages(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
+      <li class="button" onclick="loadImages(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
+      <li class="button" onclick="loadImages(${lastPage})">${lastPage}</li>
+      <li class="button">»</a></li>`
+
+      paginationContainer.appendChild(paginationButtonsList);
+      });
+    }
+
+    loadImages(currentPage);
+</script>
+
+</html>
