@@ -5,11 +5,10 @@ const category = 'nature';
 let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
-let loadImages = function(pageNumber){
+let loadImages = function(currentPage){
     var midPaginationBtn;
-    currentPage = pageNumber;
         
-    if (1 > pageNumber || pageNumber > lastPage){
+    if (1 > currentPage || currentPage > lastPage){
        return;
     }
 
@@ -20,7 +19,7 @@ let loadImages = function(pageNumber){
         {key: '9463119-69ef5d64c755fd0eb340937ae',
          image_type: image_type,
          category: category,
-         page: pageNumber,
+         page: currentPage,
          per_page: 9
     }, 
         function( data ) {
@@ -63,7 +62,7 @@ let loadImages = function(pageNumber){
 
       if (currentPage < 4){
           loadPaginationBtns(4);
-      } else if (pageNumber>(lastPage-3)){
+      } else if (currentPage>(lastPage-3)){
           loadPaginationBtns(lastPage-3);
       } else {
           loadPaginationBtns(currentPage);
