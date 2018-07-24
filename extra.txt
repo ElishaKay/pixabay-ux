@@ -1,3 +1,8 @@
+ if (1 > pageNumber > lastPage){
+          return;
+  }
+
+
   <!-- Our buttons go here -->
   <center>
   <div id="paginationContainer">

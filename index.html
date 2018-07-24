@@ -22,6 +22,7 @@
 </body>
       
 <script>
+    let lastPage;
     let currentPage = 1;
     const image_type = 'photo';
     const category = 'nature';
@@ -29,9 +30,14 @@
     let paginationContainer = document.querySelector('#paginationContainer');
 
     let loadImages = function(pageNumber){
+        console.log('lastPage is: ',lastPage);
         var midPaginationBtn;
         currentPage = pageNumber;
         
+        if (1 > pageNumber || pageNumber > lastPage){
+          return;
+        }
+
         imagesContainer.innerHTML = '';
         paginationContainer.innerHTML = '';
         
@@ -45,7 +51,7 @@
             }, 
             function( data ) {
                 let total = data.totalHits;
-                let lastPage = Math.ceil(data.totalHits/9);
+                lastPage = Math.ceil(data.totalHits/9);
                 console.log('lastPage: ',lastPage);
                 console.log(data);
 
@@ -64,7 +70,7 @@
                 }
 
       //Populate the Pagination Section
-      function loadPaginationBtns (midPaginationBtn){
+      let loadPaginationBtns = function(midPaginationBtn){
           let paginationButtonsList = document.createElement("ul");
           paginationButtonsList.classList.add("theButtonsList"); 
           paginationButtonsList.innerHTML = 
@@ -82,13 +88,9 @@
           paginationContainer.appendChild(paginationButtonsList);      
       }
 
-      if (1 > pageNumber > lastPage){
-          console.log('desired pageNumber out of range');
-          return;
-      }
       if (currentPage < 4){
           loadPaginationBtns(4);
-      } else if (pageNumber>(lastPage-2)){
+      } else if (pageNumber>(lastPage-3)){
           loadPaginationBtns(lastPage-3);
       } else {
           loadPaginationBtns(currentPage);
