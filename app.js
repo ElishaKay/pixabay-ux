@@ -1,37 +1,40 @@
 let lastPage;
-let currentPage;
+let pageNumber;
 const image_type = 'photo';
 const category = 'nature';
+let header = document.querySelector('#header');
 let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
+let loadHeader = function(pageNumber) {
+    console.log('loading header with pageNumber',pageNumber);
+    header.innerHTML = '';
+    let headerTitle = document.createElement('h1');
+    headerTitle.innerHTML = `Viewing Page ${pageNumber}`
+    header.appendChild(headerTitle);
+};
   
-let loadImages = function(currentPage){
+let loadImages = function(pageNumber){
     var midPaginationBtn;
-        
-    if (1 > currentPage || currentPage > lastPage){
-       return;
-    }
 
     imagesContainer.innerHTML = '';
-    paginationContainer.innerHTML = '';
         
     $.get("https://pixabay.com/api", 
         {key: '9463119-69ef5d64c755fd0eb340937ae',
          image_type: image_type,
          category: category,
-         page: currentPage,
+         page: pageNumber,
          per_page: 9
     }, 
         function( data ) {
             let total = data.totalHits;
             lastPage = Math.ceil(data.totalHits/9);
-            if (currentPage < 4){
+            if (pageNumber < 4){
                loadPaginationBtns(4);
-            } else if (currentPage>(lastPage-3)){
+            } else if (pageNumber>(lastPage-3)){
                loadPaginationBtns(lastPage-3);
             } else {
-               loadPaginationBtns(currentPage);
+               loadPaginationBtns(pageNumber);
             }
             console.log(data);
 
@@ -46,7 +49,7 @@ let loadImages = function(currentPage){
                 <p class='username'>
                 <a target="_blank" href='https://pixabay.com/users/${images[i].user}'+'-'+${images[i].user_id}>${images[i].user}</a>
                 </p>`
-                imagesContainer.appendChild(imageDiv)
+                imagesContainer.appendChild(imageDiv);
             }
      })
 };
@@ -54,26 +57,32 @@ let loadImages = function(currentPage){
   
 //Populate the Pagination Section
 let loadPaginationBtns = function(midPaginationBtn){
-    console.log('this is the lastPage var in loadPagination function:', lastPage);
+   paginationContainer.innerHTML = '';
+    
+   console.log('this is the lastPage var in loadPagination function:', lastPage);
 
    let paginationButtonsList = document.createElement("ul");
    paginationButtonsList.classList.add("theButtonsList"); 
    paginationButtonsList.innerHTML = 
 
-      `<li class="button" onclick="refreshDOM(${currentPage-1})"><a>«</a></li>
+      `<li class="button" onclick="refreshDOM(${pageNumber-1})"><a>«</a></li>
       <li class="button" onclick="refreshDOM(1)"><a>1</a></li>
       <li class="button" onclick="refreshDOM(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
       <li class="button" onclick="refreshDOM(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
-      <li id="currentPage" class="button" onclick="refreshDOM(${midPaginationBtn})">${midPaginationBtn}</a></li>
+      <li id="pageNumber" class="button" onclick="refreshDOM(${midPaginationBtn})">${midPaginationBtn}</a></li>
       <li class="button" onclick="refreshDOM(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
       <li class="button" onclick="refreshDOM(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
       <li class="button" onclick="refreshDOM(${lastPage})">${lastPage}</li>
-      <li class="button" onclick="refreshDOM(${currentPage+1})">»</a></li>`
+      <li class="button" onclick="refreshDOM(${pageNumber+1})">»</a></li>`
 
       paginationContainer.appendChild(paginationButtonsList);      
 }
 
 let refreshDOM = function(pageToLoad){
+    if (1 > pageToLoad || pageToLoad > lastPage){
+       return;
+    }
+    loadHeader(pageToLoad);
     loadImages(pageToLoad);
 }
 
