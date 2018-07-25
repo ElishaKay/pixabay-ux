@@ -1,30 +1,40 @@
 let lastPage;
-let currentPage = 1;
+let pageNumber;
 const image_type = 'photo';
 const category = 'nature';
+let header = document.querySelector('#header');
 let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
-let loadImages = function(currentPage){
-    var midPaginationBtn;
-        
-    if (1 > currentPage || currentPage > lastPage){
-       return;
-    }
+let loadHeader = function(pageNumber) {
+    header.innerHTML = '';
+    let headerTitle = document.createElement('h1');
+    headerTitle.innerHTML = `Viewing Page ${pageNumber}`
+    header.appendChild(headerTitle);
+};
+  
+let loadImages = function(pageNumber){
+    let midPaginationBtn;
 
     imagesContainer.innerHTML = '';
-    paginationContainer.innerHTML = '';
         
     $.get("https://pixabay.com/api", 
         {key: '9463119-69ef5d64c755fd0eb340937ae',
          image_type: image_type,
          category: category,
-         page: currentPage,
+         page: pageNumber,
          per_page: 9
     }, 
         function( data ) {
             let total = data.totalHits;
             lastPage = Math.ceil(data.totalHits/9);
+            if (pageNumber < 4){
+               loadPaginationBtns(4);
+            } else if (pageNumber>(lastPage-3)){
+               loadPaginationBtns(lastPage-3);
+            } else {
+               loadPaginationBtns(pageNumber);
+            }
             console.log(data);
 
             //Populate the Images Container
@@ -38,36 +48,44 @@ let loadImages = function(currentPage){
                 <p class='username'>
                 <a target="_blank" href='https://pixabay.com/users/${images[i].user}'+'-'+${images[i].user_id}>${images[i].user}</a>
                 </p>`
-                imagesContainer.appendChild(imageDiv)
+                imagesContainer.appendChild(imageDiv);
             }
+     })
+};
 
-      //Populate the Pagination Section
-      let loadPaginationBtns = function(midPaginationBtn){
-          let paginationButtonsList = document.createElement("ul");
-          paginationButtonsList.classList.add("theButtonsList"); 
-          paginationButtonsList.innerHTML = 
+  
+//Populate the Pagination Section
+let loadPaginationBtns = function(midPaginationBtn){
+   paginationContainer.innerHTML = '';
 
-          `<li class="button" onclick="loadImages(${currentPage-1})"><a>«</a></li>
-          <li class="button" onclick="loadImages(1)"><a>1</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
-          <li id="currentPage" class="button" onclick="loadImages(${midPaginationBtn})">${midPaginationBtn}</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
-          <li class="button" onclick="loadImages(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
-          <li class="button" onclick="loadImages(${lastPage})">${lastPage}</li>
-          <li class="button" onclick="loadImages(${currentPage+1})">»</a></li>`
+   let paginationButtonsList = document.createElement("ul");
+   paginationButtonsList.classList.add("theButtonsList"); 
+   paginationButtonsList.innerHTML = 
 
-          paginationContainer.appendChild(paginationButtonsList);      
-      }
+      `<li class="button" onclick="refreshDOM(${pageNumber-1})"><a>«</a></li>
+      <li class="button" onclick="refreshDOM(1)"><a>1</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
+      <li id="pageNumber" class="button" onclick="refreshDOM(${midPaginationBtn})">${midPaginationBtn}</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
+      <li class="button" onclick="refreshDOM(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
+      <li class="button" onclick="refreshDOM(${lastPage})">${lastPage}</li>
+      <li class="button" onclick="refreshDOM(${pageNumber+1})">»</a></li>`
 
-      if (currentPage < 4){
-          loadPaginationBtns(4);
-      } else if (currentPage>(lastPage-3)){
-          loadPaginationBtns(lastPage-3);
-      } else {
-          loadPaginationBtns(currentPage);
-      } 
-  });
+      paginationContainer.appendChild(paginationButtonsList);      
 }
 
-loadImages(currentPage);
+let refreshDOM = function(pageToLoad){
+    if (1 > pageToLoad || pageToLoad > lastPage){
+       return;
+    }
+    // set global pageNumber variable
+    pageNumber = pageToLoad;
+    loadHeader(pageToLoad);
+    loadImages(pageToLoad);
+}
+
+ 
+refreshDOM(1);
+
+
