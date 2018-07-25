@@ -7,7 +7,6 @@ let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
 let loadHeader = function(pageNumber) {
-    console.log('loading header with pageNumber',pageNumber);
     header.innerHTML = '';
     let headerTitle = document.createElement('h1');
     headerTitle.innerHTML = `Viewing Page ${pageNumber}`
@@ -15,7 +14,7 @@ let loadHeader = function(pageNumber) {
 };
   
 let loadImages = function(pageNumber){
-    var midPaginationBtn;
+    let midPaginationBtn;
 
     imagesContainer.innerHTML = '';
         
@@ -58,8 +57,6 @@ let loadImages = function(pageNumber){
 //Populate the Pagination Section
 let loadPaginationBtns = function(midPaginationBtn){
    paginationContainer.innerHTML = '';
-    
-   console.log('this is the lastPage var in loadPagination function:', lastPage);
 
    let paginationButtonsList = document.createElement("ul");
    paginationButtonsList.classList.add("theButtonsList"); 
@@ -82,6 +79,8 @@ let refreshDOM = function(pageToLoad){
     if (1 > pageToLoad || pageToLoad > lastPage){
        return;
     }
+    // set global pageNumber variable
+    pageNumber = pageToLoad;
     loadHeader(pageToLoad);
     loadImages(pageToLoad);
 }
