@@ -1,5 +1,6 @@
 let lastPage;
 let pageNumber;
+let searchBox;
 const image_type = 'photo';
 const category = 'nature';
 let header = document.querySelector('#header');
@@ -8,7 +9,7 @@ let paginationContainer = document.querySelector('#paginationContainer');
 
 let loadSearchBox = function(){
    let searchBox = document.createElement('form');
-   searchBox.setAttribute(onsubmit, executeSearch);
+   // searchBox.setAttribute('onsubmit', 'executeSearch();return false;');
 
    searchBox.id = 'searchBox'; 
    searchBox.innerHTML = 
@@ -17,13 +18,13 @@ let loadSearchBox = function(){
      </center>
      <br>`;
    header.appendChild(searchBox);
-}
 
-let executeSearch = function(e){
-   e.preventDefault();
-   let input = searchBox.elements;
-   let searchTerm = input['searchTerm'];
-   console.log(searchTerm);
+   searchBox.addEventListener('submit', function(evt){
+    evt.preventDefault();
+    let input = searchBox.elements;
+    let searchTerm = input['searchTerm'];
+    console.log(searchTerm);
+   });
 }
 
 let loadHeader = function(pageNumber) {
@@ -109,4 +110,5 @@ let refreshDOM = function(pageToLoad){
  
 refreshDOM(1);
 loadSearchBox();
+
 
