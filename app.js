@@ -6,12 +6,33 @@ let header = document.querySelector('#header');
 let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
+let loadSearchBox = function(){
+   let searchBox = document.createElement('form');
+   searchBox.setAttribute(onsubmit, executeSearch);
+
+   searchBox.id = 'searchBox'; 
+   searchBox.innerHTML = 
+     `<center>
+        <input type="text" name='searchTerm'>
+     </center>
+     <br>`;
+   header.appendChild(searchBox);
+}
+
+let executeSearch = function(e){
+   e.preventDefault();
+   let input = searchBox.elements;
+   let searchTerm = input['searchTerm'];
+   console.log(searchTerm);
+}
+
 let loadHeader = function(pageNumber) {
     header.innerHTML = '';
     let headerTitle = document.createElement('h1');
     headerTitle.innerHTML = `Viewing Page ${pageNumber}`
     header.appendChild(headerTitle);
 };
+
   
 let loadImages = function(pageNumber){
     let midPaginationBtn;
@@ -87,5 +108,5 @@ let refreshDOM = function(pageToLoad){
 
  
 refreshDOM(1);
-
+loadSearchBox();
 
