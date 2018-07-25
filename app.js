@@ -1,6 +1,5 @@
 let lastPage;
 let pageNumber;
-let searchBox;
 const image_type = 'photo';
 const category = 'nature';
 let header = document.querySelector('#header');
@@ -14,16 +13,16 @@ let loadSearchBox = function(){
    searchBox.id = 'searchBox'; 
    searchBox.innerHTML = 
      `<center>
-        <input type="text" name='searchTerm'>
+        <input type="text" name='searchTerm' value=''>
      </center>
      <br>`;
    header.appendChild(searchBox);
 
    searchBox.addEventListener('submit', function(evt){
-    evt.preventDefault();
-    let input = searchBox.elements;
-    let searchTerm = input['searchTerm'];
-    console.log(searchTerm);
+      evt.preventDefault();
+      let input = searchBox.elements;
+      let searchTerm = input['searchTerm'].value;
+      console.log(searchTerm);
    });
 }
 
