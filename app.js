@@ -1,27 +1,58 @@
 let lastPage;
 let pageNumber;
+let searchTerm;
+let category = 'nature';
 const image_type = 'photo';
-const category = 'nature';
 let header = document.querySelector('#header');
 let imagesContainer = document.querySelector('#imagesContainer');
 let paginationContainer = document.querySelector('#paginationContainer');
 
+let loadSearchBox = function(){
+   let searchBox = document.createElement('form');
+   // searchBox.setAttribute('onsubmit', 'executeSearch();return false;');
+
+   searchBox.id = 'searchBox'; 
+   searchBox.innerHTML = 
+     `<center>
+        <input type="text" name='searchTerm' value=''>
+     </center>
+     <br>`;
+   header.appendChild(searchBox);
+
+   searchBox.addEventListener('submit', function(evt){
+      evt.preventDefault();
+      let input = searchBox.elements;
+      searchTerm = input['searchTerm'].value;
+      console.log('The current search is: ',searchTerm);
+      refreshDOM(1,searchTerm);
+   });
+}
+
 let loadHeader = function(pageNumber) {
     header.innerHTML = '';
-    let headerTitle = document.createElement('h1');
-    headerTitle.innerHTML = `Viewing Page ${pageNumber}`
+    let headerTitle = document.createElement('h3');
+    if(typeof searchTerm !== 'undefined'){
+        headerTitle.innerHTML = `Viewing Page ${pageNumber} for searchTerm "${searchTerm}"`
+    } else {
+      headerTitle.innerHTML = `Welcome to the Pixabay Search UX`
+    }
+
     header.appendChild(headerTitle);
 };
-  
-let loadImages = function(pageNumber){
-    let midPaginationBtn;
 
+  
+let loadImages = function(pageNumber, searchTerm){
+    let midPaginationBtn;
     imagesContainer.innerHTML = '';
-        
+    
+    if(typeof searchTerm !== 'undefined'){
+        category = searchTerm;
+    }
+
     $.get("https://pixabay.com/api", 
-        {key: '9463119-69ef5d64c755fd0eb340937ae',
+        {key: '9648595-648ea08d9441c4123d7acaff0',
          image_type: image_type,
-         category: category,
+         q: category,
          page: pageNumber,
          per_page: 9
     }, 
@@ -35,7 +66,6 @@ let loadImages = function(pageNumber){
             } else {
                loadPaginationBtns(pageNumber);
             }
-            console.log(data);
 
             //Populate the Images Container
             let images = data.hits;
@@ -43,7 +73,7 @@ let loadImages = function(pageNumber){
                 let imageDiv = document.createElement("div");
                 imageDiv.classList.add("imageBox");
                 imageDiv.innerHTML = 
-                `<img class='imgPreview' src='${images[i].largeImageURL}'>
+                `<img class='imgPreview' src='${images[i].webformatURL}'>
                 <img class='avatar' src='${images[i].userImageURL}'>
                 <p class='username'>
                 <a target="_blank" href='https://pixabay.com/users/${images[i].user}'+'-'+${images[i].user_id}>${images[i].user}</a>
@@ -75,14 +105,15 @@ let loadPaginationBtns = function(midPaginationBtn){
       paginationContainer.appendChild(paginationButtonsList);      
 }
 
-let refreshDOM = function(pageToLoad){
+let refreshDOM = function(pageToLoad, searchTerm){  
     if (1 > pageToLoad || pageToLoad > lastPage){
        return;
     }
     // set global pageNumber variable
     pageNumber = pageToLoad;
     loadHeader(pageToLoad);
-    loadImages(pageToLoad);
+    loadSearchBox();
+    loadImages(pageToLoad, searchTerm);
 }
 
  
