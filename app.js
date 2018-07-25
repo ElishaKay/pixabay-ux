@@ -104,11 +104,11 @@ let refreshDOM = function(pageToLoad){
     // set global pageNumber variable
     pageNumber = pageToLoad;
     loadHeader(pageToLoad);
+    loadSearchBox();
     loadImages(pageToLoad);
 }
 
  
 refreshDOM(1);
-loadSearchBox();
 
 
