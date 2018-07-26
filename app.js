@@ -1,4 +1,4 @@
-let lastPage;
+let lastPage=56;
 let pageNumber;
 let searchTerm;
 let category = 'nature';
@@ -9,7 +9,6 @@ let paginationContainer = document.querySelector('#paginationContainer');
 
 let loadSearchBox = function(){
    let searchBox = document.createElement('form');
-   // searchBox.setAttribute('onsubmit', 'executeSearch();return false;');
 
    searchBox.id = 'searchBox'; 
    searchBox.innerHTML = 
@@ -57,6 +56,7 @@ let loadImages = function(pageNumber, searchTerm){
          per_page: 9
     }, 
         function( data ) {
+            console.log(data);
             let total = data.totalHits;
             lastPage = Math.ceil(data.totalHits/9);
             if (pageNumber < 4){
@@ -105,8 +105,9 @@ let loadPaginationBtns = function(midPaginationBtn){
       paginationContainer.appendChild(paginationButtonsList);      
 }
 
-let refreshDOM = function(pageToLoad, searchTerm){  
-    if (1 > pageToLoad || pageToLoad > lastPage){
+let refreshDOM = function(pageToLoad, searchTerm){
+    console.log('lastPage is: ',lastPage) 
+    if (1 > pageToLoad || pageToLoad > lastPage) {
        return;
     }
     // set global pageNumber variable
@@ -116,7 +117,12 @@ let refreshDOM = function(pageToLoad, searchTerm){
     loadImages(pageToLoad, searchTerm);
 }
 
- 
-refreshDOM(1);
+let initDOM = function(pageToLoad){
+    loadHeader(pageToLoad);
+    loadSearchBox();
+    loadImages(pageToLoad);
+}
+
+initDOM(1);
 
 
