@@ -2,8 +2,16 @@ To-Do:
 
 a) handle results of searchTerm: "now"; (6 pages of results) and "Buttefly" (1 result total)
 
+note: the searchTerm "baboon" correctly returns 16 pages of results.
 
-b) Replacing Jquery with Fetch
+note: need to test against the search 'everything' which brings 2 pages of results.
+
+b) add url parameters (even without the page reloading - it should be appended to the url without reloading when a search is executed, and if the user saves that URL and then navigates back to it, there should be a function that parses the parameters passed via the URL and loads the results for that keyword).
+
+For example: navigating to: 'index.html?searchTerm=everything' should provide results based on the phrase 'everything'.
+
+
+c) Replacing Jquery with Fetch
 
 let pageNumber = 1;
     const image_type = 'photo';

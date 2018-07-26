@@ -1,5 +1,9 @@
-import {sayHello} from './modules/greeting';
-import {sum, product} from './modules/math-functions';
+// Up Next: How to Import modules
+// import {sayHello} from './modules/greeting';
+// import {sum, product} from './modules/math-functions';
+
+// define GlobalScope
+let GS = {};
 
 let lastPage=56;
 let pageNumber;
@@ -98,15 +102,15 @@ let loadPaginationBtns = function(midPaginationBtn){
    paginationButtonsList.classList.add("theButtonsList"); 
    paginationButtonsList.innerHTML = 
 
-      `<li class="button" onclick="refreshDOM(${pageNumber-1})"><a>«</a></li>
-      <li class="button" onclick="refreshDOM(1)"><a>1</a></li>
-      <li class="button" onclick="refreshDOM(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
-      <li class="button" onclick="refreshDOM(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
-      <li id="pageNumber" class="button" onclick="refreshDOM(${midPaginationBtn})">${midPaginationBtn}</a></li>
-      <li class="button" onclick="refreshDOM(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
-      <li class="button" onclick="refreshDOM(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
-      <li class="button" onclick="refreshDOM(${lastPage})">${lastPage}</li>
-      <li class="button" onclick="refreshDOM(${pageNumber+1})">»</a></li>`
+      `<li class="button" onclick="window.refreshDOM(${pageNumber-1})"><a>«</a></li>
+      <li class="button" onclick="window.refreshDOM(1)"><a>1</a></li>
+      <li class="button" onclick="window.refreshDOM(${midPaginationBtn-2})">${midPaginationBtn-2}</a></li>
+      <li class="button" onclick="window.refreshDOM(${midPaginationBtn-1})">${midPaginationBtn-1}</a></li>
+      <li class="button" onclick="window.refreshDOM(${midPaginationBtn})">${midPaginationBtn}</a></li>
+      <li class="button" onclick="window.refreshDOM(${midPaginationBtn+1})">${midPaginationBtn+1}</a></li>
+      <li class="button" onclick="window.refreshDOM(${midPaginationBtn+2})">${midPaginationBtn+2}</a></li>
+      <li class="button" onclick="window.refreshDOM(${lastPage})">${lastPage}</li>
+      <li class="button" onclick="window.refreshDOM(${pageNumber+1})">»</a></li>`
 
       paginationContainer.appendChild(paginationButtonsList);      
 }
@@ -121,7 +125,7 @@ let handleZeroResults = function(){
    paginationContainer.innerHTML = '';
 }
 
-let refreshDOM = function(pageToLoad, searchTerm){
+window.refreshDOM = function(pageToLoad, searchTerm){
     if (1 > pageToLoad || pageToLoad > lastPage) {
        return;
     }
@@ -141,3 +145,4 @@ let initDOM = function(pageToLoad){
 initDOM(1);
 
 
+export default GS;
