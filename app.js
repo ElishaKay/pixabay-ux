@@ -56,7 +56,6 @@ let loadImages = function(pageNumber, searchTerm){
          per_page: 9
     }, 
         function( data ) {
-            console.log(data);
             if(!data.totalHits){
                 handleZeroResults();
                 return;
@@ -119,7 +118,6 @@ let handleZeroResults = function(){
 }
 
 let refreshDOM = function(pageToLoad, searchTerm){
-    console.log('lastPage is: ',lastPage) 
     if (1 > pageToLoad || pageToLoad > lastPage) {
        return;
     }

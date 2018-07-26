@@ -1,6 +1,9 @@
-handle results of searchTerm: "now"; (6 pages of results)
+To-Do: 
 
-Replacing Jquery with Fetch
+a) handle results of searchTerm: "now"; (6 pages of results) and "Buttefly" (1 result total)
+
+
+b) Replacing Jquery with Fetch
 
 let pageNumber = 1;
     const image_type = 'photo';
