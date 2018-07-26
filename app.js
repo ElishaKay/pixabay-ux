@@ -57,7 +57,10 @@ let loadImages = function(pageNumber, searchTerm){
     }, 
         function( data ) {
             console.log(data);
-            let total = data.totalHits;
+            if(!data.totalHits){
+                handleZeroResults();
+                return;
+            }
             lastPage = Math.ceil(data.totalHits/9);
             if (pageNumber < 4){
                loadPaginationBtns(4);
@@ -103,6 +106,16 @@ let loadPaginationBtns = function(midPaginationBtn){
       <li class="button" onclick="refreshDOM(${pageNumber+1})">»</a></li>`
 
       paginationContainer.appendChild(paginationButtonsList);      
+}
+
+let handleZeroResults = function(){
+   let searchAgainBox = document.createElement('div');
+   searchAgainBox.innerHTML = 
+     `<center>
+        <p>Ain't found nothing, muchacho. Please search again 🙄</p>
+     </center>`;
+   header.appendChild(searchAgainBox);
+   paginationContainer.innerHTML = '';
 }
 
 let refreshDOM = function(pageToLoad, searchTerm){
