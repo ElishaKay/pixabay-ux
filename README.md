@@ -1,4 +1,8 @@
-<img src="chimps.png">
+<img src="img/chimps.png">
+
+Earlier stage of Development (before search feature):
+
+<img src="img/pixabay.png">
 
 Notes about Forms:
 

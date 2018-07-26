@@ -1,3 +1,6 @@
+import {sayHello} from './modules/greeting';
+import {sum, product} from './modules/math-functions';
+
 let lastPage=56;
 let pageNumber;
 let searchTerm;
@@ -71,6 +74,7 @@ let loadImages = function(pageNumber, searchTerm){
 
             //Populate the Images Container
             let images = data.hits;
+            let i=0;
             for (i = 0; i < images.length; i++) { 
                 let imageDiv = document.createElement("div");
                 imageDiv.classList.add("imageBox");
