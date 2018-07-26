@@ -1,0 +1,46 @@
+/* Div that holds image and avatar */
+.imageBox {
+    display:inline-block;
+    width: 33.3%;
+    height:300px;
+    margin-bottom: 100px;
+}
+
+/* main image itself */
+.imgPreview {
+    display:inline-block;
+    width: 400px;
+    height:300px;
+}
+
+.avatar {
+    height:50px;
+    border-radius: 50%;
+    display:inline-block;
+}
+
+.username{
+    color:Blue; 
+    font-size: 20px;
+    display:inline-block;
+}
+
+.buttons {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.theButtonsList {
+    display: inline-block;
+}
+
+.button {
+    display: inline-block;
+}
+
+.button:hover {
+    border: 1px solid black;
+    outline-style: solid;
+    outline-color: green;
+}
